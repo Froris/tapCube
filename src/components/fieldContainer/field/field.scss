@@ -1,0 +1,26 @@
+@import "../../../colors/appColors.scss";
+
+.field-container {
+  position: relative;
+  width: 90%;
+  height: 70vh;
+  margin: 50px auto 0;
+  background-color: $appBlack;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 400px) and (max-width: 739px) {
+  .field-container {
+    width: 90%;
+    height: 60vh;
+    margin: 20px auto 0;
+  }
+}
+
+@media screen and (min-width: 740px) and (max-width: 1024px) {
+  .field-container {
+    width: 90%;
+    height: 60vh;
+    margin: 50px auto 0;
+  }
+}

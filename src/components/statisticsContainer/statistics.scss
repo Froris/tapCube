@@ -1,0 +1,14 @@
+@import "../../colors/appColors.scss";
+
+.side-container {
+  border: 1px solid black;
+  width: 20%;
+  height: 100vh;
+  background-color: $sideContainer;
+}
+
+@media screen and (min-width: 720px) and (max-width: 1024px) {
+  .side-container {
+    width: 25%;
+  }
+}

@@ -1,0 +1,63 @@
+@import "../../../colors/appColors.scss";
+
+.last-user-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 160px;
+  padding-left: 10px;
+  width: 100%;
+  height: 15vh;
+  h3 {
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
+  span {
+    font-size: 1.4em;
+    color: white;
+    .last-user__points,
+    .last-user__name {
+      font-size: 1em;
+      color: $appBlue;
+    }
+  }
+}
+
+@media screen and (min-width: 400px) and (max-width: 739px) {
+  .last-user-container {
+    margin-top: 15px;
+    height: 15vh;
+    h3 {
+      font-size: 14px;
+    }
+    span {
+      font-size: 12px;
+      color: white;
+      .last-user__points,
+      .last-user__name {
+        font-size: 1em;
+        color: $appBlue;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 740px) and (max-width: 1024px) {
+  .last-user-container {
+    margin-top: 80px;
+    height: 15vh;
+    h3 {
+      font-size: 17px;
+    }
+    span {
+      font-size: 14px;
+      color: white;
+      .last-user__points,
+      .last-user__name {
+        font-size: 1em;
+        color: $appBlue;
+      }
+    }
+  }
+}

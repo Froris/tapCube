@@ -1,0 +1,30 @@
+@import "~bootstrap/scss/bootstrap";
+
+.modal-text {
+  font-size: 1.2rem;
+  &.note {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+}
+
+.worning__word {
+  color: red;
+}
+
+.text__points {
+  font-weight: 600;
+  color: cornflowerblue;
+}
+
+.btn.btn-outline-secondary {
+  background-color: cornflowerblue;
+  &:hover {
+    background-color: rgb(6, 85, 231);
+  }
+}
+
+.save-text {
+  color: white;
+}

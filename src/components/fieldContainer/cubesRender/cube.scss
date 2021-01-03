@@ -1,0 +1,44 @@
+@import "../../../colors/cubeColors.scss";
+
+.cube {
+  position: absolute;
+  border: 5px solid white;
+  border-radius: 12px;
+}
+
+.regular {
+  width: 90px;
+  height: 90px;
+  background-color: $regularCube;
+}
+.rare {
+  width: 70px;
+  height: 70px;
+  background-color: $rareCube;
+}
+.gold {
+  width: 50px;
+  height: 50px;
+  background-color: $SSRcube;
+}
+
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  .cube {
+    position: absolute;
+    border: 2px solid white;
+    border-radius: 6px;
+  }
+
+  .regular {
+    width: 50px;
+    height: 50px;
+  }
+  .rare {
+    width: 35px;
+    height: 35px;
+  }
+  .gold {
+    width: 30px;
+    height: 30px;
+  }
+}
