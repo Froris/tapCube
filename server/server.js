@@ -6,9 +6,21 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+const algorithmsRoutes = require("./routes/algorithms");
 const sortPlayers = require("./controllers/sortPlayers");
 
 app.use(bodyParser.json());
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    console.error(err);
+    res.status(400);
+    res.send({ result: "SyntaxError: Invalid JSON format." });
+    return;
+  }
+
+  next();
+});
+
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "build", "index.html")));
@@ -62,58 +74,7 @@ app.post("/save", (req, res) => {
 });
 
 // HOME TASK FUNCTIONS *** *** ***
-const algorithms = require("./controllers/algorithms");
-
-app.post("/rom-num", (req, res) => {
-  try {
-    const romNum = req.body.input;
-    const convertedNum = algorithms.convertRomNum(romNum);
-    res.send({ input: convertedNum });
-  } catch (error) {
-    res.send({ input: error.message }).status(400);
-  }
-});
-
-app.post("/is-palindrome", (req, res) => {
-  try {
-    const word = req.body.input;
-    const result = algorithms.isPalindrome(word);
-    res.send({ input: result });
-  } catch (error) {
-    res.send({ input: error.message }).status(400);
-  }
-});
-
-app.post("/check-brackets", (req, res) => {
-  try {
-    const brackets = req.body.input;
-    const result = algorithms.bracketsChecker(brackets);
-    res.send({ input: result });
-  } catch (error) {
-    res.send({ input: error.message }).status(400);
-  }
-});
-
-app.post("/sort-array", (req, res) => {
-  try {
-    const firstArr = req.body.input.arr1;
-    const secondArr = req.body.input.arr2;
-    const result = algorithms.sortArr(firstArr, secondArr);
-    res.send({ input: result });
-  } catch (error) {
-    res.send({ input: error.message }).status(400);
-  }
-});
-
-app.post("/get-num-idx", (req, res) => {
-  try {
-    const numArr = req.body.input.nums;
-    const num = req.body.input.num;
-    const result = algorithms.getNumIdx(numArr, num);
-    res.send({ input: result });
-  } catch (error) {
-    res.send({ input: error.message }).status(400);
-  }
-});
+// Rework ==============================================================================
+app.use("/algorithms", algorithmsRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

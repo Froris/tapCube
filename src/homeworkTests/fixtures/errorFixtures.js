@@ -52,7 +52,7 @@ export const invalidArrays = [
   },
 ];
 
-export const invalidNumArr = [
+export const invalidNumIdx = [
   {
     name: "Num idx: Should return error message if array contains string.",
     input: { nums: [1, "a", 5, 6], num: 5 },
