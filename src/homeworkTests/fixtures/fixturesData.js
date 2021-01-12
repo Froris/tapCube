@@ -22,7 +22,7 @@ export const arrays = [
   },
 ];
 
-export const numArr = [
+export const numIdx = [
   {
     name: "Num idx: Should correctly get index of requested number.",
     input: { nums: [1, 3, 5, 6], num: 5 },

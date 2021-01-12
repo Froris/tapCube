@@ -1,52 +1,59 @@
+const ValidExcep = require("./userExceptions");
+
 const romNumValidator = (input) => {
-  const romanRegexp = /^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$/;
+  const romanRegexp = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
 
   if (typeof input !== "string" || input.length < 1) {
-    throw new Error("Please provide not empty string.");
+    throw new ValidExcep("Please provide not empty string.");
   }
 
-  if (!romanRegexp.test(input)) throw new Error("Error! Input string must contain roman numerals.");
+  if (!romanRegexp.test(input)) throw new ValidExcep("Error! Input string must contain roman numerals.");
 };
 
 const palindromeValidator = (input) => {
   const validChars = /^[a-zA-Zа-яА-Я]+$/;
   const validateNums = /^[0-9+(),-]+$/;
+  let isValid;
 
   if (typeof input === "string") {
-    return validChars.test(input);
+    isValid = validChars.test(input);
+    if (isValid) return true;
+    throw new ValidExcep("Provided string must contain characters only.");
   }
 
-  return validateNums.test(input);
+  isValid = validateNums.test(input);
+  if (isValid) return true;
+  throw new ValidExcep("Provided value must contain numbers only.");
 };
 
 const bracketsValidator = (input) => {
   if (typeof input !== "string") {
-    throw new Error("Input must be a string.");
+    throw new ValidExcep("Input must be a string.");
   } else if (input.length <= 1 || input.length > 104) {
-    throw new Error("Input value must be between 2 and 104 symbols length.");
+    throw new ValidExcep("Input value must be between 2 and 104 symbols length.");
   }
 };
 
 const arraysValidator = (arr1, arr2) => {
   if (arr1.length < 2 || arr2.length > 1000) {
-    throw new Error("Arrays length must be more then 1 and less then 1000.");
+    throw new ValidExcep("Arrays length must be more then 1 and less then 1000.");
   }
 
   for (let value of arr1) {
-    if (typeof value === "string") throw new Error("Arrays must contain only numbers.");
+    if (typeof value === "string") throw new ValidExcep("Arrays must contain only numbers.");
   }
 
   for (let value of arr2) {
-    if (typeof value === "string") throw new Error("Arrays must contain only numbers.");
+    if (typeof value === "string") throw new ValidExcep("Arrays must contain only numbers.");
   }
 };
 
 const numIdxValidator = (numArr, num) => {
   for (let value of numArr) {
-    if (typeof value === "string") throw new Error("Array must contain only numbers.");
+    if (typeof value === "string") throw new ValidExcep("Array must contain only numbers.");
   }
 
-  if (typeof num === "string") throw new Error("Second argument must be a number.");
+  if (typeof num === "string") throw new ValidExcep("Second argument must be a number.");
 };
 
 exports.romNumValidator = romNumValidator;
