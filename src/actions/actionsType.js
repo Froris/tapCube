@@ -14,3 +14,5 @@ export const GET_SAVED_PLAYERS = "GET_SAVED_PLAYERS";
 export const SAVE_PLAYER = "SAVE_PLAYER";
 export const SAVE_LAST_PLAYER = "SAVE_LAST_PLAYER";
 export const CLEAR_PLAYERS = "CLEAR_PLAYERS";
+
+export const SET_AUTH = "SET_AUTH";

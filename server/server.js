@@ -3,11 +3,17 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const jwt = require("jsonwebtoken");
+// const cors = require("cors");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
+const authRoutes = require("./routes/authRoutes");
 const algorithmsRoutes = require("./routes/algorithms");
 const sortPlayers = require("./controllers/sortPlayers");
+const checkToken = require("./utils/checkToken");
+
+//  app.use(cors());
 
 app.use(bodyParser.json());
 app.use((err, req, res, next) => {
@@ -23,7 +29,20 @@ app.use((err, req, res, next) => {
 
 app.use(express.static(path.join(__dirname, "..", "build")));
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "build", "index.html")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+app.post("/", checkToken, (req, res) => {
+  jwt.verify(req.token, "secretkey", (err, authData) => {
+    if (err) {
+      res.status(403);
+      res.send({ message: "Not authorized", isAuth: false });
+    } else {
+      res.send({ isAuth: true, authData });
+    }
+  });
+});
 
 app.get("/get-players", (req, res) => {
   fs.stat(path.join(__dirname, "savedPlayers", "players.json"), (err, stats) => {
@@ -73,8 +92,10 @@ app.post("/save", (req, res) => {
   }
 });
 
+// LOGIN HOME TASK
+app.use("/auth", authRoutes);
+
 // HOME TASK FUNCTIONS *** *** ***
-// Rework ==============================================================================
 app.use("/algorithms", algorithmsRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

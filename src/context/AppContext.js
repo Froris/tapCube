@@ -12,6 +12,7 @@ import {
   GET_SAVED_PLAYERS,
   SET_GAME_PAUSE,
   SET_GAME_RESTART,
+  SET_AUTH,
 } from "../actions/actionsType";
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
   isGameEnded: false,
   isGamePaused: false,
   isGameRestarted: false,
+  isAuth: false,
   cubesData: [
     {
       type: "regular",
@@ -74,6 +76,9 @@ const reducer = (state, action) => {
 
     case GET_SAVED_PLAYERS:
       return { ...state, players: state.players.concat(action.payload) };
+
+    case SET_AUTH:
+      return { ...state, isAuth: action.payload };
 
     default:
       return state;
