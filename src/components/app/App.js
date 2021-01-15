@@ -16,6 +16,7 @@ const App = () => {
 
   const checkAuth = async () => {
     const userToken = await localStorage.getItem("userToken");
+
     await fetch(`${baseURL}/`, {
       method: "POST",
       headers: { Authorization: `Bearer ${userToken}` },
@@ -30,21 +31,21 @@ const App = () => {
       });
   };
 
-  const getSavedPlayers = () => {
-    fetch(`${baseURL}/get-players`, { method: "GET" })
-      .then((response) => response.json())
-      .then((data) => {
-        // Если с сервера пришёл не пустой объект
-        if (data.playersList) {
-          dispatch({ type: GET_SAVED_PLAYERS, payload: data.playersList });
-          dispatch({ type: SAVE_LAST_PLAYER, payload: data.lastPlay });
-        }
-      });
-  };
+  // const getSavedPlayers = () => {
+  //   fetch(`${baseURL}/get-players`, { method: "GET" })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // Если с сервера пришёл не пустой объект
+  //       if (data.playersList) {
+  //         dispatch({ type: GET_SAVED_PLAYERS, payload: data.playersList });
+  //         dispatch({ type: SAVE_LAST_PLAYER, payload: data.lastPlay });
+  //       }
+  //     });
+  // };
 
   useEffect(() => {
     checkAuth();
-    getSavedPlayers();
+    // getSavedPlayers();
   }, []);
 
   return state.isAuth ? (

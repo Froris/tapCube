@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const jwt = require("jsonwebtoken");
-// const cors = require("cors");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 
@@ -13,7 +13,7 @@ const algorithmsRoutes = require("./routes/algorithms");
 const sortPlayers = require("./controllers/sortPlayers");
 const checkToken = require("./utils/checkToken");
 
-//  app.use(cors());
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use((err, req, res, next) => {
