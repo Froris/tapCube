@@ -1,47 +1,47 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 
 import "./modals.scss";
-import { baseURL } from "../../index";
-import { CLEAR_POINTS, SAVE_LAST_PLAYER, SAVE_PLAYER, SET_GAME_END } from "../../actions/actionsType";
+import { CLEAR_POINTS, SET_GAME_END, SET_CURRENT_PLAYER, UPDATE_PLAYERS_LIST } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
+import makePostRequest from "../utils/makePostRequest";
 
 const EndGameModal = () => {
   const [state, dispatch] = useContext(AppContext);
-  const [playerName, setName] = useState("");
-
-  const setPlayerName = (e) => {
-    setName(e.target.value);
-  };
 
   const onClose = () => {
     dispatch({ type: CLEAR_POINTS });
     dispatch({ type: SET_GAME_END, payload: false });
   };
 
-  const savePlayers = () => {
-    const currentPlayer = { name: playerName, points: state.points };
-    const players = [...state.players];
-    players.push(currentPlayer);
+  const savePlayer = () => {
+    const { username, login } = state.currentPlayer;
+    const currentMax = state.currentPlayer.maxScore;
+    const updatedMax = currentMax > state.points ? currentMax : state.points;
 
-    // Отправляем обновлённый список игроков для сохранения
-    // В ответ получаем отсортированный список
-    fetch(`${baseURL}/save`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playersList: players, lastPlay: currentPlayer }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) console.error(data.error);
-        else {
-          dispatch({ type: SAVE_PLAYER, payload: data.playersList });
-          dispatch({ type: SAVE_LAST_PLAYER, payload: data.lastPlay });
+    const currentPlayer = {
+      username: username,
+      login: login,
+      score: state.points,
+      maxScore: updatedMax,
+    };
+
+    // список игроков отправляем на сервер
+    makePostRequest({ apiUrl: "/save", data: currentPlayer }, { "Content-Type": "application/json" }).then(
+      (response) => {
+        if (response.error) {
+          return console.error(response.error);
         }
-      });
+
+        // сервер возвращает список всех игроков и текущего, который мы передаём в store
+        localStorage.setItem("currentPlayer", JSON.stringify(response.savedPlayer));
+        dispatch({ type: SET_CURRENT_PLAYER, payload: response.savedPlayer });
+        dispatch({ type: UPDATE_PLAYERS_LIST, payload: response.list });
+        return;
+      }
+    );
 
     dispatch({ type: SET_GAME_END, payload: false });
     dispatch({ type: CLEAR_POINTS });
@@ -54,20 +54,15 @@ const EndGameModal = () => {
       </Modal.Header>
       <Modal.Body>
         <p className="modal-text">
-          Good job! You`ve earned <span className="text__points">{state.points}</span> points!
+          Good job, {state.currentPlayer.username}! You`ve earned{" "}
+          <span className="text__points">{state.points}</span> points!
         </p>
         <span className="modal-text note">press anywhere to continue without saving</span>
       </Modal.Body>
       <Modal.Footer>
         <InputGroup className="mb-3">
-          <FormControl
-            onChange={setPlayerName}
-            placeholder="Enter name... (default: Player)"
-            aria-label="Enter name... (default: Player)"
-            aria-describedby="basic-addon2"
-          />
           <InputGroup.Append>
-            <Button variant="outline-secondary" onClick={savePlayers}>
+            <Button variant="outline-secondary" onClick={savePlayer}>
               <span className="save-text">SAVE RESULTS</span>
             </Button>
           </InputGroup.Append>

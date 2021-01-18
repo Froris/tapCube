@@ -56,8 +56,55 @@ const numIdxValidator = (numArr, num) => {
   if (typeof num === "string") throw new ValidExcep("Second argument must be a number.");
 };
 
+const registerValidator = ({ username, login, password }) => {
+  const validName = /^[a-zA-Zа-яА-Я ]+([._]?[a-zA-Zа-яА-Я]+)*$/;
+  const validString = /^[a-z0-9]+([._]?[a-z0-9]+)*$/;
+  const validPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  // Валидация имени
+  if (username.length === 0) {
+    console.error("username length === 0");
+    return false;
+  }
+
+  if (!validName.test(username)) {
+    console.error("invalid username");
+    return false;
+  }
+
+  if (username.length < 4) {
+    console.error("username length < 4");
+    return false;
+  }
+
+  // Валидация логина
+  if (login.length === 0) {
+    console.error("login length === 0");
+    return false;
+  }
+
+  if (!validString.test(login)) {
+    console.error("invalid login");
+    return false;
+  }
+
+  if (login.length < 4) {
+    console.error("login length < 4");
+    return false;
+  }
+
+  // Валидация пароля
+  if (!validPass.test(password)) {
+    console.error("invalid password");
+    return false;
+  }
+
+  return true;
+};
+
 exports.romNumValidator = romNumValidator;
 exports.palindromeValidator = palindromeValidator;
 exports.bracketsValidator = bracketsValidator;
 exports.arraysValidator = arraysValidator;
 exports.numIdxValidator = numIdxValidator;
+exports.registerValidator = registerValidator;

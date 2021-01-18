@@ -9,10 +9,9 @@ export const SET_POINTS = "SET_POINTS";
 export const CLEAR_POINTS = "CLEAR_POINTS";
 
 export const SET_CURRENT_CUBE = "SET_CURRENT_CUBE";
+export const SET_CURRENT_PLAYER = "SET_CURRENT_PLAYER";
 
-export const GET_SAVED_PLAYERS = "GET_SAVED_PLAYERS";
-export const SAVE_PLAYER = "SAVE_PLAYER";
-export const SAVE_LAST_PLAYER = "SAVE_LAST_PLAYER";
+export const UPDATE_PLAYERS_LIST = "UPDATE_PLAYERS_LIST";
 export const CLEAR_PLAYERS = "CLEAR_PLAYERS";
 
 export const SET_AUTH = "SET_AUTH";
