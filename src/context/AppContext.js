@@ -6,10 +6,9 @@ import {
   CLEAR_POINTS,
   SET_GAME_END,
   SET_NEW_GAME,
+  SET_CURRENT_PLAYER,
   SET_IS_FIRST_GAME,
-  SAVE_PLAYER,
-  SAVE_LAST_PLAYER,
-  GET_SAVED_PLAYERS,
+  UPDATE_PLAYERS_LIST,
   SET_GAME_PAUSE,
   SET_GAME_RESTART,
   SET_AUTH,
@@ -27,7 +26,7 @@ const initialState = {
   cubesData: [
     {
       type: "regular",
-      points: 1,
+      points: 2,
     },
     {
       type: "rare",
@@ -39,7 +38,8 @@ const initialState = {
     },
   ],
   players: [],
-  lastPlay: {},
+
+  currentPlayer: {},
 };
 
 const reducer = (state, action) => {
@@ -68,17 +68,14 @@ const reducer = (state, action) => {
     case CLEAR_POINTS:
       return { ...state, points: 0 };
 
-    case SAVE_PLAYER:
-      return { ...state, players: action.payload };
-
-    case SAVE_LAST_PLAYER:
-      return { ...state, lastPlay: action.payload };
-
-    case GET_SAVED_PLAYERS:
-      return { ...state, players: state.players.concat(action.payload) };
+    case UPDATE_PLAYERS_LIST:
+      return { ...state, players: action.payload.slice(0) };
 
     case SET_AUTH:
       return { ...state, isAuth: action.payload };
+
+    case SET_CURRENT_PLAYER:
+      return { ...state, currentPlayer: { ...action.payload } };
 
     default:
       return state;

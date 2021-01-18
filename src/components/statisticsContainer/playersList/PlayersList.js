@@ -9,9 +9,11 @@ const PlayersList = ({ sortedList }) => {
         {sortedList.map((currentPlayer, index) => {
           return (
             <li className="player" key={"p" + index}>
-              <span className="player__name">{currentPlayer.name ? currentPlayer.name : `Player ${index}`}</span>
+              <span className="player__name">
+                {currentPlayer.username ? currentPlayer.username : `Player ${index}`}
+              </span>
               <div className="player__score">
-                <span>{currentPlayer.points}</span>
+                <span>{currentPlayer.score}</span>
                 <div className="progress-bar" style={{ width: currentPlayer.rateBarLength }}></div>
               </div>
             </li>

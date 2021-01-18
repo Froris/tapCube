@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 import "./field-header.scss";
-import { baseURL } from "../../..";
 
 import AppButton from "../../buttons/AppButton";
 import Points from "../points/Points";
@@ -19,6 +18,7 @@ import {
 
 const FieldHeader = () => {
   const [state, dispatch] = useContext(AppContext);
+  const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
 
   const onStartGameRound = () => {
     dispatch({ type: SET_GAME_START, payload: true });
@@ -31,17 +31,17 @@ const FieldHeader = () => {
   };
 
   const onNewGame = () => {
+    const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
     fetch(`${baseURL}/new-game`)
       .then((response) => {
         if (response.status === 200) {
           dispatch({ type: SET_NEW_GAME });
           document.location.reload();
-        } else {
-          return response.json();
+          return;
         }
       })
       .then((data) => {
-        console.warn(data.message);
+        console.error(data.error);
       });
   };
 
