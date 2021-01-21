@@ -8,6 +8,7 @@ const makePostRequest = async ({ apiUrl, data = {} }, headersOps) => {
     }).then((response) => response.json());
     return result;
   } catch (error) {
+    console.error(error.message);
     return { error: "Sorry, something went wrong. Please try again later." };
   }
 };

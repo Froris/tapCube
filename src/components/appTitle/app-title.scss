@@ -1,21 +1,52 @@
+@import "../../colors/appColors.scss";
+
+.title-container {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-block {
+  width: 50%;
+}
+
+.admin-bar {
+  margin-right: 5%;
+  padding: 10px 60px;
+  display: block;
+  color: white;
+  border: solid 1px $appBlack;
+  border-radius: 5px;
+  font-size: 24px;
+  letter-spacing: 1px;
+  background-color: $appBlue;
+  &:hover {
+    cursor: pointer;
+    background-color: $appBlack;
+    color: $appBlue;
+  }
+}
+
 .title-container span {
   display: block;
-  margin-left: 10%;
+  margin-left: 20%;
   margin-bottom: 10px;
   font-weight: 500;
   font-size: 18px;
 }
 
 .app-title {
-  margin: 30px 0 15px 10%;
+  margin: 30px 0 15px 20%;
   padding: 0;
-  width: 100%;
   font-size: 40px;
 }
 
 @media screen and (min-width: 400px) and (max-width: 739px) {
   .app-title {
-    margin: 20px 0 15px 10%;
+    margin: 20px 0 15px 20%;
     padding: 0;
     width: 100%;
     font-size: 14px;
@@ -24,7 +55,7 @@
 
 @media screen and (min-width: 740px) and (max-width: 1024px) {
   .app-title {
-    margin: 20px 0 15px 10%;
+    margin: 20px 0 15px 20%;
     padding: 0;
     width: 100%;
     font-size: 20px;

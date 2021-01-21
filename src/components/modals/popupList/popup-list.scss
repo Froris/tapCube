@@ -1,0 +1,62 @@
+@import "../../../colors/appColors.scss";
+
+.modal.show.players-popup .modal-dialog {
+  margin: 5% auto;
+  width: 70vw;
+  max-width: 1200px;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  .player-name {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .stats {
+    display: flex;
+    flex-direction: row;
+  }
+  .make-admin-btn {
+    width: 120px;
+    padding: 2px;
+    font-size: 18px;
+    margin-top: 10px;
+    align-self: flex-end;
+    border: 3px solid $appBlue;
+    border-radius: 11px;
+    background: transparent;
+    color: $appBlue;
+    &:hover {
+      background-color: $appBlack;
+    }
+  }
+}
+
+.player-stats,
+.game-stats {
+  font-size: 18px;
+  margin: 6px 20px;
+}
+
+.player-stats,
+.game-stats {
+  span {
+    display: inline-block;
+    margin: 0px 10px;
+  }
+  .stat-title {
+    position: relative;
+    font-weight: 600;
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: $appBlack;
+      box-shadow: 0px 0px 2px 1px $appBlue;
+      width: 2px;
+      height: 25px;
+      top: 1px;
+      left: -7px;
+    }
+  }
+}

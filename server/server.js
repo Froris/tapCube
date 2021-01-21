@@ -93,26 +93,34 @@ app.get("/new-game", (req, res) => {
 app.post("/save", (req, res) => {
   const savedPlayer = req.body;
   const savedPlayers = req.app.locals.savedPlayers;
-  const { score, maxScore } = savedPlayer;
+  const { id, role, login, username, IP, registerDate, score, maxScore, gamesCount } = savedPlayer;
 
   // СДЕЛАТЬ РЕФАКТОР ЦЕПОЧЕК ПРОМИСОВ
   savedPlayers
-    .findOneAndUpdate({ login: savedPlayer.login }, { $set: { score, maxScore } })
+    .findOneAndUpdate({ login }, { $set: { score, maxScore, gamesCount } })
     .then((response) => {
       if (!response.ok) {
         res.status(500);
         res.send({ error: "Updating failed!" });
         return;
       }
+
       // Если игрок не найден - создаём его
       if (response.value === null) {
         savedPlayers
           .insertOne({
-            login: savedPlayer.login,
-            username: savedPlayer.username,
-            score: savedPlayer.score,
-            maxScore: savedPlayer.maxScore,
+            id,
+            role,
+            login,
+            username,
+            IP,
+            registerDate,
+            score,
+            maxScore,
+            gamesCount,
           })
+          // После добавления игрока в бд - берём список игроков,
+          // соритруем его и отсылаем обратно
           .then(() => {
             savedPlayers
               .find()
@@ -120,12 +128,12 @@ app.post("/save", (req, res) => {
               .toArray()
               .then((list) => {
                 if (list.length <= 10) {
-                  res.send({ list, savedPlayer });
+                  res.send({ list, savedPlayer: { ...savedPlayer, gamesCount } });
                   return;
                 }
 
                 const top10Players = list.splice(0, 10);
-                res.send({ list: top10Players, savedPlayer });
+                res.send({ list: top10Players, savedPlayer: { ...savedPlayer, gamesCount } });
                 return;
               });
           });
@@ -154,6 +162,51 @@ app.use("/auth", authRoutes);
 
 // HOME TASK FUNCTIONS
 app.use("/algorithms", algorithmsRoutes);
+
+//PAGINATION
+app.get("/list", async (req, res) => {
+  const savedPlayers = req.app.locals.savedPlayers;
+  const pageNum = req.query.page || 0;
+  const sortedList = await savedPlayers.find().sort({ score: -1 }).toArray();
+  const listPages = [];
+
+  do {
+    listPages.push(sortedList.splice(0, 10));
+  } while (sortedList.length > 0);
+
+  res.send({ page: listPages[pageNum], pagesCount: listPages.length });
+});
+
+// Смена админа
+app.post("/set-admin", (req, res) => {
+  const savedPlayers = req.app.locals.savedPlayers;
+  const playersCollection = req.app.locals.playersColl;
+
+  const updateAdmin = async () => {
+    const newAdmin = req.body.newAdminLogin;
+    const oldAdmin = req.body.currAdminLogin;
+    // Обновление нового админа
+    await savedPlayers.findOneAndUpdate({ login: newAdmin }, { $set: { role: "admin" } });
+    await playersCollection.findOneAndUpdate({ login: newAdmin }, { $set: { role: "admin" } });
+    // Обновление старого админа
+    await playersCollection.findOneAndUpdate({ login: oldAdmin }, { $set: { role: "gamer" } });
+    // В value хранится объект с обновлёнными параметрами текущего игрока
+    await savedPlayers
+      .findOneAndUpdate({ login: oldAdmin }, { $set: { role: "gamer" } }, { returnOriginal: false })
+      .then((updatedPlayer) => updatedPlayer.value);
+  };
+
+  try {
+    updateAdmin().then((result) => {
+      res.send({ result: { ...result } });
+    });
+
+    return;
+  } catch (error) {
+    console.error(error.message);
+    return;
+  }
+});
 
 // DB CONNECT
 const url = "mongodb+srv://froris:frorispass111@cluster0.ha6ee.mongodb.net/TapCube?retryWrites=true&w=majority";

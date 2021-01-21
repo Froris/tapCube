@@ -18,7 +18,6 @@ import {
 
 const FieldHeader = () => {
   const [state, dispatch] = useContext(AppContext);
-  const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
 
   const onStartGameRound = () => {
     dispatch({ type: SET_GAME_START, payload: true });
@@ -76,7 +75,7 @@ const FieldHeader = () => {
         )}
       </div>
       <Points points={state.points} />
-      <Timer time={{ hours: 0, minutes: 1, seconds: 0 }} timeUpHandler={onEndGameRound} />
+      <Timer time={{ hours: 0, minutes: 0, seconds: 5 }} timeUpHandler={onEndGameRound} />
     </div>
   );
 };

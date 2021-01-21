@@ -51,6 +51,7 @@ const App = () => {
   useEffect(() => {
     checkAuth();
     checkSavedPlayers();
+    console.log(state.currentPlayer);
   }, []);
 
   return state.isAuth ? (

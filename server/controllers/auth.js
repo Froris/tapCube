@@ -7,15 +7,18 @@ const loginController = (req, res) => {
   const savedPlayers = req.app.locals.savedPlayers;
   const loggedUser = req.body;
   let maxScore;
+  let gamesCount;
 
   // Находим очки игрока
   savedPlayers.findOne({ login: loggedUser.login }).then((user) => {
     if (user === null) {
       maxScore = 0;
+      gamesCount = 0;
       return;
     }
 
     maxScore = user.maxScore;
+    gamesCount = user.gamesCount;
     return;
   });
 
@@ -23,10 +26,16 @@ const loginController = (req, res) => {
     // Если найден пользователь
     if (user) {
       // Проверяем пароль
-      if (!bcrypt.compareSync(loggedUser.password, user.password)) {
-        res.send({ error: "please provide correct login/password or create an account." });
-        return;
+      try {
+        const isValid = bcrypt.compareSync(loggedUser.password, user.password);
+        if (!isValid) {
+          res.send({ error: "please provide correct login/password or create an account." });
+          return;
+        }
+      } catch (error) {
+        console.error(error);
       }
+
       // Если пароль верный - делаем токен
       jwt.sign(
         {
@@ -44,9 +53,14 @@ const loginController = (req, res) => {
           // Если токен создался без ошибок - возвращаем данные пользователя вместе с токеном
           res.status(200);
           res.send({
+            _id: user._id,
+            role: user.role,
             username: user.username,
             login: user.login,
+            IP: user.IP,
+            registerDate: user.registerDate,
             maxScore,
+            gamesCount,
             isAuth: true,
             token,
           });
@@ -103,19 +117,24 @@ const registerController = (req, res) => {
         playersCollection
           .insertOne({
             _id: Object._id,
+            role: createdUser.role,
             username: createdUser.username,
             login: createdUser.login,
             password: hashedPass,
             IP,
             registerDate: regDate,
           })
-          .then(() => {
+          .then(({ ops }) => {
             res.status(201);
             res.send({
+              _id: ops[0]._id,
+              role: createdUser.role,
               username: createdUser.username,
               login: createdUser.login,
               isAuth: true,
               token,
+              IP,
+              registerDate: regDate,
             });
           });
       }

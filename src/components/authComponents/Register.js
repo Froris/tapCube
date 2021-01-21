@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import moment from "moment";
 
 import { SET_AUTH, SET_CURRENT_PLAYER } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
@@ -21,9 +22,11 @@ const RegisterForm = ({ changeForm }) => {
     e.preventDefault();
 
     const createdUser = {
+      role: "gamer",
       username,
       login,
       password,
+      gamesCount: 0,
     };
 
     const checkValidity = new Promise((res, rej) => {
@@ -43,17 +46,26 @@ const RegisterForm = ({ changeForm }) => {
             return setResponse(response);
           }
 
-          localStorage.setItem("userToken", response.token);
-          localStorage.setItem("currentPlayer", JSON.stringify({ ...createdUser, score: 0, maxScore: 0 }));
+          const { id, role, username, login, token, IP, registerDate } = response;
+
+          const recievedPlayer = {
+            id,
+            role,
+            username,
+            login,
+            IP,
+            registerDate: moment(registerDate).format("DDDo, MMM, YYYY"),
+            score: 0,
+            maxScore: 0,
+            gamesCount: 0,
+          };
+
+          localStorage.setItem("userToken", token);
+          localStorage.setItem("currentPlayer", JSON.stringify(recievedPlayer));
 
           dispatch({
             type: SET_CURRENT_PLAYER,
-            payload: {
-              username: response.username,
-              login: response.login,
-              score: 0,
-              maxScore: 0,
-            },
+            payload: recievedPlayer,
           });
           dispatch({ type: SET_AUTH, payload: true });
         });

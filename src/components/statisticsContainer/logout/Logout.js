@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { SET_AUTH } from "../../../actions/actionsType";
 import { AppContext } from "../../../context/AppContext";
 

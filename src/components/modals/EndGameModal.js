@@ -17,15 +17,20 @@ const EndGameModal = () => {
   };
 
   const savePlayer = () => {
-    const { username, login } = state.currentPlayer;
+    const { id, role, username, login, IP, registerDate } = state.currentPlayer;
     const currentMax = state.currentPlayer.maxScore;
     const updatedMax = currentMax > state.points ? currentMax : state.points;
 
     const currentPlayer = {
+      id,
+      role,
       username: username,
       login: login,
+      registerDate,
+      IP,
       score: state.points,
       maxScore: updatedMax,
+      gamesCount: state.currentPlayer.gamesCount + 1,
     };
 
     // список игроков отправляем на сервер

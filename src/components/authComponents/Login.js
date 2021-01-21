@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import moment from "moment";
 import { SET_AUTH, SET_CURRENT_PLAYER } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 
@@ -7,8 +8,8 @@ import makePostRequest from "../utils/makePostRequest";
 
 const LoginForm = ({ changeForm }) => {
   const [, dispatch] = useContext(AppContext);
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("admin");
+  const [password, setPassword] = useState("qwertyui1");
   const [error, setError] = useState("");
 
   const postData = (e) => {
@@ -22,15 +23,25 @@ const LoginForm = ({ changeForm }) => {
           return dispatch({ type: SET_AUTH, payload: false });
         }
 
-        localStorage.setItem("userToken", response.token);
-        localStorage.setItem(
-          "currentPlayer",
-          JSON.stringify({ ...userData, score: response.score, maxScore: response.maxScore })
-        );
+        const { _id, role, username, login, token, IP, registerDate, maxScore, gamesCount } = response;
+
+        const recievedPlayer = {
+          _id,
+          role,
+          username,
+          login,
+          IP,
+          registerDate: moment(registerDate).format("DDDo, MMM, YYYY"),
+          maxScore,
+          gamesCount,
+        };
+
+        localStorage.setItem("userToken", token);
+        localStorage.setItem("currentPlayer", JSON.stringify(recievedPlayer));
 
         dispatch({
           type: SET_CURRENT_PLAYER,
-          payload: { ...userData, username: response.username, score: response.score, maxScore: response.maxScore },
+          payload: { ...recievedPlayer, score: 0 },
         });
         dispatch({ type: SET_AUTH, payload: true });
       }
