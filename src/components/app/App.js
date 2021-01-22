@@ -9,7 +9,7 @@ import NewGameModal from "../modals/NewGameModal";
 import EndGameModal from "../modals/EndGameModal";
 import { SET_AUTH, SET_CURRENT_PLAYER, UPDATE_PLAYERS_LIST } from "../../actions/actionsType";
 import AuthComponents from "../authComponents/Auth";
-import makePostRequest from "../utils/makePostRequest";
+import { makePostRequest, makeGetRequest } from "../utils/makeFetchRequest";
 
 const App = () => {
   const [state, dispatch] = useContext(AppContext);
@@ -18,10 +18,12 @@ const App = () => {
   const checkAuth = async () => {
     const userToken = await localStorage.getItem("userToken");
 
+    // Если нет токена - юзер не залогинен/зареган
     if (userToken === null || userToken === undefined) {
       dispatch({ type: SET_AUTH, payload: false });
     }
 
+    // Проверяем авторизацию текущего игрока и сохраняем его в localStorage
     makePostRequest({ apiUrl: "/" }, { Authorization: `Bearer ${userToken}` }).then((response) => {
       if (response.error) {
         console.error(response.error);
@@ -36,22 +38,18 @@ const App = () => {
 
   // Получение списка игроков при первом запуске
   const checkSavedPlayers = () => {
-    const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
-    fetch(`${baseURL}/get-players`, { method: "GET" })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          return console.error(data.error);
-        }
+    makeGetRequest("/get-players").then((response) => {
+      if (response.error) {
+        return console.error(response.error);
+      }
 
-        dispatch({ type: UPDATE_PLAYERS_LIST, payload: data.list });
-      });
+      dispatch({ type: UPDATE_PLAYERS_LIST, payload: response.list });
+    });
   };
 
   useEffect(() => {
     checkAuth();
     checkSavedPlayers();
-    console.log(state.currentPlayer);
   }, []);
 
   return state.isAuth ? (

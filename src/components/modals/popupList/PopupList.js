@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import "./popup-list.scss";
 import { AppContext } from "../../../context/AppContext";
 import Player from "./Player";
-import makePostRequest from "../../utils/makePostRequest";
+import { makeGetRequest, makePostRequest } from "../../utils/makeFetchRequest";
 import { SET_CURRENT_PLAYER } from "../../../actions/actionsType";
 
 const PopupList = ({ isShown, onCloseHandler }) => {
@@ -13,7 +13,6 @@ const PopupList = ({ isShown, onCloseHandler }) => {
   const [page, setPage] = useState([]);
   const [pagesCount, setPagesCount] = useState();
   const [pageNum, setPageNum] = useState(0);
-  const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
 
   const setNewPage = (e) => {
     setPageNum(e.target.id);
@@ -34,16 +33,14 @@ const PopupList = ({ isShown, onCloseHandler }) => {
   };
 
   const getPages = () => {
-    fetch(`${baseURL}/list?page=${pageNum}`, { method: "GET" })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          return console.error(data.error);
-        }
+    makeGetRequest(`/list?page=${pageNum}`).then((response) => {
+      if (response.error) {
+        return console.error(response.error);
+      }
 
-        setPagesCount(data.pagesCount);
-        setPage(data.page);
-      });
+      setPagesCount(response.pagesCount);
+      setPage(response.page);
+    });
   };
 
   useEffect(() => {

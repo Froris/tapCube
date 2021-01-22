@@ -4,7 +4,7 @@ import { SET_AUTH, SET_CURRENT_PLAYER } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 
 import "./auth.scss";
-import makePostRequest from "../utils/makePostRequest";
+import { makePostRequest } from "../utils/makeFetchRequest";
 
 const LoginForm = ({ changeForm }) => {
   const [, dispatch] = useContext(AppContext);

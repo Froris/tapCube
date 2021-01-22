@@ -4,7 +4,7 @@ import moment from "moment";
 import { SET_AUTH, SET_CURRENT_PLAYER } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 import useValidator from "../../hooks/useValidator";
-import makePostRequest from "../utils/makePostRequest";
+import { makePostRequest } from "../utils/makeFetchRequest";
 
 import "./auth.scss";
 
@@ -21,23 +21,23 @@ const RegisterForm = ({ changeForm }) => {
     setResponse("");
     e.preventDefault();
 
-    const createdUser = {
-      role: "gamer",
-      username,
-      login,
-      password,
-      gamesCount: 0,
-    };
-
     const checkValidity = new Promise((res, rej) => {
       const validLogin = validateLogin(login);
       const validPass = validatePassword(password, confirmedPassword);
-      if (validPass && validLogin) return res(true);
+      if (validPass && validLogin) {
+        return res({
+          role: "gamer",
+          username,
+          login,
+          password,
+          gamesCount: 0,
+        });
+      }
       return rej("Invalid data");
     });
 
     checkValidity
-      .then(() => {
+      .then((createdUser) => {
         makePostRequest(
           { apiUrl: "/auth/register", data: createdUser },
           { "Content-Type": "application/json" }
@@ -46,10 +46,10 @@ const RegisterForm = ({ changeForm }) => {
             return setResponse(response);
           }
 
-          const { id, role, username, login, token, IP, registerDate } = response;
+          const { _id, role, username, login, token, IP, registerDate } = response;
 
           const recievedPlayer = {
-            id,
+            _id,
             role,
             username,
             login,

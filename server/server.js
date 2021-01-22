@@ -93,7 +93,7 @@ app.get("/new-game", (req, res) => {
 app.post("/save", (req, res) => {
   const savedPlayer = req.body;
   const savedPlayers = req.app.locals.savedPlayers;
-  const { id, role, login, username, IP, registerDate, score, maxScore, gamesCount } = savedPlayer;
+  const { _id, role, login, username, IP, registerDate, score, maxScore, gamesCount } = savedPlayer;
 
   // СДЕЛАТЬ РЕФАКТОР ЦЕПОЧЕК ПРОМИСОВ
   savedPlayers
@@ -109,7 +109,7 @@ app.post("/save", (req, res) => {
       if (response.value === null) {
         savedPlayers
           .insertOne({
-            id,
+            _id,
             role,
             login,
             username,

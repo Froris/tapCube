@@ -15,6 +15,7 @@ import {
   SET_NEW_GAME,
   CLEAR_POINTS,
 } from "../../../actions/actionsType";
+import { makeGetRequest } from "../../utils/makeFetchRequest";
 
 const FieldHeader = () => {
   const [state, dispatch] = useContext(AppContext);
@@ -30,18 +31,14 @@ const FieldHeader = () => {
   };
 
   const onNewGame = () => {
-    const baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
-    fetch(`${baseURL}/new-game`)
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch({ type: SET_NEW_GAME });
-          document.location.reload();
-          return;
-        }
-      })
-      .then((data) => {
-        console.error(data.error);
-      });
+    makeGetRequest("/new-game").then((response) => {
+      if (response.error) {
+        console.error(response.error);
+      }
+
+      dispatch({ type: SET_NEW_GAME });
+      document.location.reload();
+    });
   };
 
   const onRestart = () => {
@@ -75,7 +72,7 @@ const FieldHeader = () => {
         )}
       </div>
       <Points points={state.points} />
-      <Timer time={{ hours: 0, minutes: 0, seconds: 5 }} timeUpHandler={onEndGameRound} />
+      <Timer time={{ hours: 0, minutes: 1, seconds: 0 }} timeUpHandler={onEndGameRound} />
     </div>
   );
 };

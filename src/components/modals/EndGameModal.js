@@ -6,7 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import "./modals.scss";
 import { CLEAR_POINTS, SET_GAME_END, SET_CURRENT_PLAYER, UPDATE_PLAYERS_LIST } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
-import makePostRequest from "../utils/makePostRequest";
+import { makePostRequest } from "../utils/makeFetchRequest";
 
 const EndGameModal = () => {
   const [state, dispatch] = useContext(AppContext);
@@ -17,12 +17,12 @@ const EndGameModal = () => {
   };
 
   const savePlayer = () => {
-    const { id, role, username, login, IP, registerDate } = state.currentPlayer;
+    const { _id, role, username, login, IP, registerDate } = state.currentPlayer;
     const currentMax = state.currentPlayer.maxScore;
     const updatedMax = currentMax > state.points ? currentMax : state.points;
 
     const currentPlayer = {
-      id,
+      _id,
       role,
       username: username,
       login: login,
