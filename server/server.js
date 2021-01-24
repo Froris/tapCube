@@ -90,71 +90,48 @@ app.get("/new-game", (req, res) => {
 });
 
 // Сохранение игроков
-app.post("/save", (req, res) => {
+app.post("/save", async (req, res) => {
   const savedPlayer = req.body;
-  const savedPlayers = req.app.locals.savedPlayers;
-  const { _id, role, login, username, IP, registerDate, score, maxScore, gamesCount } = savedPlayer;
+  const savedPlayersColl = req.app.locals.savedPlayers;
+  const { login, score, maxScore, gamesCount } = savedPlayer;
 
-  // СДЕЛАТЬ РЕФАКТОР ЦЕПОЧЕК ПРОМИСОВ
-  savedPlayers
-    .findOneAndUpdate({ login }, { $set: { score, maxScore, gamesCount } })
-    .then((response) => {
-      if (!response.ok) {
-        res.status(500);
-        res.send({ error: "Updating failed!" });
-        return;
-      }
+  try {
+    const updatedPlayer = await savedPlayersColl
+      .findOneAndUpdate({ login }, { $set: { score, maxScore, gamesCount } }, { returnOriginal: false })
+      .then((result) => {
+        // Если игрок уже есть - возвращаем обновлённый документ игрока
+        if (result.value !== null) {
+          return result.value;
+        }
 
-      // Если игрок не найден - создаём его
-      if (response.value === null) {
-        savedPlayers
-          .insertOne({
-            _id,
-            role,
-            login,
-            username,
-            IP,
-            registerDate,
-            score,
-            maxScore,
-            gamesCount,
-          })
-          // После добавления игрока в бд - берём список игроков,
-          // соритруем его и отсылаем обратно
-          .then(() => {
-            savedPlayers
-              .find()
-              .sort({ score: -1 })
-              .toArray()
-              .then((list) => {
-                if (list.length <= 10) {
-                  res.send({ list, savedPlayer: { ...savedPlayer, gamesCount } });
-                  return;
-                }
-
-                const top10Players = list.splice(0, 10);
-                res.send({ list: top10Players, savedPlayer: { ...savedPlayer, gamesCount } });
-                return;
-              });
-          });
-      }
-    })
-    .then(() => {
-      savedPlayers
-        .find()
-        .sort({ score: -1 })
-        .toArray()
-        .then((list) => {
-          if (list.length <= 10) {
-            res.send({ list, savedPlayer });
-            return;
-          }
-
-          const top10Players = list.splice(0, 10);
-          res.send({ list: top10Players, savedPlayer });
-          return;
+        // Иначе - создаём его
+        return savedPlayersColl.insertOne(savedPlayer).then((result) => {
+          const newSavedPlayer = result.ops[0];
+          return newSavedPlayer;
         });
-    });
+      });
+
+    // Берём список игроков и возвращаем его вместе с обновлённым текущим игроком
+    savedPlayersColl
+      .find()
+      .sort({ score: -1 })
+      .toArray()
+      .then((list) => {
+        if (list.length <= 10) {
+          res.send({ list, savedPlayer: updatedPlayer });
+          return;
+        }
+
+        const top10Players = list.splice(0, 10);
+        res.send({ list: top10Players, savedPlayer: updatedPlayer });
+        return;
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.send({ error: "Updating failed!" });
+    return;
+  }
 });
 
 // LOGIN/REGISTER HOME TASK

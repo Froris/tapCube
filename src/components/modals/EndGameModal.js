@@ -17,12 +17,11 @@ const EndGameModal = () => {
   };
 
   const savePlayer = () => {
-    const { _id, role, username, login, IP, registerDate } = state.currentPlayer;
+    const { role, username, login, IP, registerDate } = state.currentPlayer;
     const currentMax = state.currentPlayer.maxScore;
     const updatedMax = currentMax > state.points ? currentMax : state.points;
 
     const currentPlayer = {
-      _id,
       role,
       username: username,
       login: login,
