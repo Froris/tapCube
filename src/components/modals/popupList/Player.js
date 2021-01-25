@@ -1,11 +1,21 @@
 import React from "react";
+import classNames from "classnames";
+import moment from "moment";
 
-const Player = ({ playerInfo, onClickHandler }) => {
+const Player = ({ playerInfo, currLogin, onClickHandler }) => {
+  const isCurrPlayer = playerInfo.login === currLogin;
+  const itemClass = classNames({
+    "list-item": true,
+    admin: playerInfo.role === "admin",
+  });
+
   return (
-    <li className="list-item">
-      <span className="player-name">
-        {playerInfo.username} <span>#{playerInfo._id}</span>
-      </span>
+    <li className={itemClass}>
+      <div className="player-info">
+        <span className="player-name">{playerInfo.username}</span>
+        <span className="player-id">#{playerInfo._id}</span>
+        {isCurrPlayer && <span className="curr-player">( You )</span>}
+      </div>
       <div className="stats">
         <div className="player-stats">
           <span>
@@ -18,10 +28,14 @@ const Player = ({ playerInfo, onClickHandler }) => {
           </span>
           <span>
             <span className="stat-title">Registered:</span>
-            {playerInfo.registerDate}
+            {moment(playerInfo.registerDate).format("DDDo, MMM, YYYY")}
           </span>
         </div>
         <div className="game-stats">
+          <span>
+            <span className="stat-title">Last score:</span>
+            {playerInfo.score}
+          </span>
           <span>
             <span className="stat-title">Max score:</span>
             {playerInfo.maxScore}
@@ -31,11 +45,14 @@ const Player = ({ playerInfo, onClickHandler }) => {
             {playerInfo.gamesCount}
           </span>
         </div>
+        {playerInfo.role === "gamer" ? (
+          <button className="make-admin-btn" onClick={() => onClickHandler(playerInfo.login)}>
+            make admin
+          </button>
+        ) : (
+          ""
+        )}
       </div>
-
-      <button className="make-admin-btn" onClick={() => onClickHandler(playerInfo.login)}>
-        make admin
-      </button>
     </li>
   );
 };

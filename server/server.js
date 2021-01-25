@@ -168,16 +168,13 @@ app.post("/set-admin", (req, res) => {
     // Обновление старого админа
     await playersCollection.findOneAndUpdate({ login: oldAdmin }, { $set: { role: "gamer" } });
     // В value хранится объект с обновлёнными параметрами текущего игрока
-    await savedPlayers
+    return await savedPlayers
       .findOneAndUpdate({ login: oldAdmin }, { $set: { role: "gamer" } }, { returnOriginal: false })
       .then((updatedPlayer) => updatedPlayer.value);
   };
 
   try {
-    updateAdmin().then((result) => {
-      res.send({ result: { ...result } });
-    });
-
+    updateAdmin().then((result) => res.send({ result: { ...result } }));
     return;
   } catch (error) {
     console.error(error.message);

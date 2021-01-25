@@ -63,39 +63,34 @@ const registerValidator = ({ username, login, password }) => {
 
   // Валидация имени
   if (username.length === 0) {
-    console.error("username length === 0");
+    console.error("Validation error: username input is empty");
     return false;
   }
 
   if (!validName.test(username)) {
-    console.error("invalid username");
-    return false;
-  }
-
-  if (username.length < 4) {
-    console.error("username length < 4");
+    console.error("Validation error: invalid username");
     return false;
   }
 
   // Валидация логина
   if (login.length === 0) {
-    console.error("login length === 0");
+    console.error("Validation error: login length === 0");
     return false;
   }
 
   if (!validString.test(login)) {
-    console.error("invalid login");
+    console.error("Validation error: invalid login");
     return false;
   }
 
   if (login.length < 4) {
-    console.error("login length < 4");
+    console.error("Validation error: login length < 4");
     return false;
   }
 
   // Валидация пароля
   if (!validPass.test(password)) {
-    console.error("invalid password");
+    console.error("Validation error: invalid password");
     return false;
   }
 

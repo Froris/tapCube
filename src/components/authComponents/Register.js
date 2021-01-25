@@ -14,7 +14,7 @@ const RegisterForm = ({ changeForm }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
-  const [loginErr, passErr, validateLogin, validatePassword] = useValidator();
+  const [usernameErr, loginErr, passErr, validateUsername, validateLogin, validatePassword] = useValidator();
   const [response, setResponse] = useState();
 
   const postData = async (e) => {
@@ -22,15 +22,15 @@ const RegisterForm = ({ changeForm }) => {
     e.preventDefault();
 
     const checkValidity = new Promise((res, rej) => {
+      const validUsername = validateUsername(username);
       const validLogin = validateLogin(login);
       const validPass = validatePassword(password, confirmedPassword);
-      if (validPass && validLogin) {
+      if (validPass && validLogin && validUsername) {
         return res({
           role: "gamer",
           username,
           login,
           password,
-          gamesCount: 0,
         });
       }
       return rej("Invalid data");
@@ -54,7 +54,7 @@ const RegisterForm = ({ changeForm }) => {
             username,
             login,
             IP,
-            registerDate: moment(registerDate).format("DDDo, MMM, YYYY"),
+            registerDate,
             score: 0,
             maxScore: 0,
             gamesCount: 0,
@@ -87,6 +87,7 @@ const RegisterForm = ({ changeForm }) => {
           placeholder="username ..."
           onChange={(e) => setUsername(e.target.value)}
         />
+        {usernameErr && <span className="error-message">{usernameErr}</span>}
         <input
           type="text"
           name="login"
