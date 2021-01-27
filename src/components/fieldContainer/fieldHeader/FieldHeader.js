@@ -45,6 +45,7 @@ const FieldHeader = () => {
     dispatch({ type: SET_GAME_RESTART, payload: true });
     dispatch({ type: SET_GAME_START, payload: false });
     dispatch({ type: CLEAR_POINTS });
+    dispatch({ type: SET_GAME_PAUSE, payload: false });
   };
 
   const pauseGame = () => {
