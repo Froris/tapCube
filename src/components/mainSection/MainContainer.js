@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./field-container.scss";
-import Field from "./field/Field";
-import AppTitle from "../appTitle/AppTitle";
+import "./styles/field-container.scss";
+import Field from "./Field";
+import AppTitle from "./AppTitle";
 import FieldHeader from "./fieldHeader/FieldHeader";
 
-const FieldContainer = () => {
+const MainContainer = () => {
   return (
     <div className="main-container">
       <AppTitle title="TapCube!" />
@@ -15,4 +15,4 @@ const FieldContainer = () => {
   );
 };
 
-export default FieldContainer;
+export default MainContainer;

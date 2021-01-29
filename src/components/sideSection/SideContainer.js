@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import "./statistics.scss";
-import PlayersList from "./playersList/PlayersList";
+import "./styles/statistics.scss";
+import PlayersList from "./PlayersList";
 import { AppContext } from "../../context/AppContext";
-import LastUserScore from "./lastUserScore/LastUserScore";
-import Logout from "./logout/Logout";
+import LastUserScore from "./LastUserScore";
+import Logout from "./Logout";
 
-const StatisticsContainer = () => {
+const SideContainer = () => {
   const [state] = useContext(AppContext);
   const [playersList, setPlayersList] = useState(state.players);
 
@@ -37,4 +37,4 @@ const StatisticsContainer = () => {
   );
 };
 
-export default StatisticsContainer;
+export default SideContainer;

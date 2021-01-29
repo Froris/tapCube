@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 
-import "./field-header.scss";
+import "../styles/field-header.scss";
 
 import AppButton from "../../buttons/AppButton";
-import Points from "../points/Points";
-import Timer from "../timer/Timer";
+import Points from "./Points";
+import Timer from "./timer/Timer";
 import { AppContext } from "../../../context/AppContext";
 
 import {

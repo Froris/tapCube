@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { SET_AUTH, SET_CURRENT_PLAYER } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 
-import "./auth.scss";
+import "./styles/auth.scss";
 import { makePostRequest } from "../utils/makeFetchRequest";
 
 const LoginForm = ({ changeForm }) => {

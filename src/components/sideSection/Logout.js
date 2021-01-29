@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { SET_AUTH } from "../../../actions/actionsType";
-import { AppContext } from "../../../context/AppContext";
+import { SET_AUTH } from "../../actions/actionsType";
+import { AppContext } from "../../context/AppContext";
 
-import "./logout.scss";
+import "./styles/logout.scss";
 
 const Logout = () => {
   const [, dispatch] = useContext(AppContext);

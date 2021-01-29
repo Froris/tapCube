@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import PopupList from "../modals/popupList/PopupList";
 
-import "./app-title.scss";
+import "./styles/app-title.scss";
 
 const AppTitle = ({ title }) => {
   const [username, setUsername] = useState("");

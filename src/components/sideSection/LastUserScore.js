@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 
-import "./last-user-score.scss";
+import "./styles/last-user-score.scss";
 
 const LastUserScore = () => {
   const [state] = useContext(AppContext);

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-import "./popup-list.scss";
+import "../styles/popup-list.scss";
 import { AppContext } from "../../../context/AppContext";
 import Player from "./Player";
 import { makeGetRequest, makePostRequest } from "../../utils/makeFetchRequest";

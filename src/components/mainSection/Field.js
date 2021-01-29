@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import "./field.scss";
-import CubesRender from "../cubesRender/CubesRender";
-import generateCubes from "../utils/generateCubes";
-import { AppContext } from "../../../context/AppContext";
-import { SET_POINTS } from "../../../actions/actionsType";
+import "./styles/field.scss";
+import CubesRender from "./CubesRender";
+import generateCubes from "./utils/generateCubes";
+import { AppContext } from "../../context/AppContext";
+import { SET_POINTS } from "../../actions/actionsType";
 
 const Field = () => {
   const [state, dispatch] = useContext(AppContext);

@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 
-import "./modals.scss";
+import "./styles/modals.scss";
 import { CLEAR_POINTS, SET_GAME_END, SET_CURRENT_PLAYER, UPDATE_PLAYERS_LIST } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 import { makePostRequest } from "../utils/makeFetchRequest";

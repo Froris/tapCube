@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import moment from "moment";
 
-import "./timer.scss";
+import "../../styles/timer.scss";
 import ActiveTimer from "./ActiveTimer";
-import { AppContext } from "../../../context/AppContext";
-import { SET_GAME_RESTART } from "../../../actions/actionsType";
+import { AppContext } from "../../../../context/AppContext";
+import { SET_GAME_RESTART } from "../../../../actions/actionsType";
 
 const Timer = ({ timeUpHandler, time }) => {
   const [state, dispatch] = useContext(AppContext);

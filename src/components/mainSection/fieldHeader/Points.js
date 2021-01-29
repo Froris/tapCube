@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./points.scss";
+import "../styles/points.scss";
 
 const Points = ({ points }) => {
   return (

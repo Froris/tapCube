@@ -6,7 +6,7 @@ import { AppContext } from "../../context/AppContext";
 import useValidator from "../../hooks/useValidator";
 import { makePostRequest } from "../utils/makeFetchRequest";
 
-import "./auth.scss";
+import "./styles/auth.scss";
 
 const RegisterForm = ({ changeForm }) => {
   const [, dispatch] = useContext(AppContext);

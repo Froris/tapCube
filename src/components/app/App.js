@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from "react";
 
 import "./app.scss";
 
-import StatisticsContainer from "../statisticsContainer/StatisticsContainer";
+import SideContainer from "../sideSection/SideContainer";
 import { AppContext } from "../../context/AppContext";
-import FieldContainer from "../fieldContainer/FieldContainer";
+import MainContainer from "../mainSection/MainContainer";
 import NewGameModal from "../modals/NewGameModal";
 import EndGameModal from "../modals/EndGameModal";
 import { SET_AUTH, SET_CURRENT_PLAYER, UPDATE_PLAYERS_LIST } from "../../actions/actionsType";
@@ -56,8 +56,8 @@ const App = () => {
     <>
       <NewGameModal />
       <EndGameModal />
-      <FieldContainer />
-      <StatisticsContainer />
+      <MainContainer />
+      <SideContainer />
     </>
   ) : (
     <AuthComponents />

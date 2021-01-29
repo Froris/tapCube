@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-import "./modals.scss";
+import "./styles/modals.scss";
 import { SET_IS_FIRST_GAME } from "../../actions/actionsType";
 import { AppContext } from "../../context/AppContext";
 

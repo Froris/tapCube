@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./players-list.scss";
+import "./styles/players-list.scss";
 
 const PlayersList = ({ sortedList }) => {
   return (
